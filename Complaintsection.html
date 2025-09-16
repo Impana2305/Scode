@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Section - Aadhaar KYC Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        .card-header {
+            background: #0d6efd;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .form-control, .form-select {
+            padding: 12px;
+            border-radius: 8px;
+        }
+        .btn-option {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .btn-option:hover {
+            background-color: #f8f9fa;
+            border-color: #0d6efd;
+            transform: translateY(-2px);
+        }
+        .separator {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #6c757d;
+            margin: 20px 0;
+        }
+        .separator::before,
+        .separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .separator:not(:empty)::before {
+            margin-right: .25em;
+        }
+        .separator:not(:empty)::after {
+            margin-left: .25em;
+        }
+        .complaint-status {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-inprogress {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+        .status-resolved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .upload-area {
+            border: 2px dashed #0d6efd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .upload-area:hover {
+            background-color: #e9ecef;
+        }
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .preview-item {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .complaint-card {
+            border-left: 4px solid #0d6efd;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .complaint-images {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .complaint-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 4px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+        .modal-content {
+            border-radius: 15px;
+        }
+        .complaint-type-icon {
+            font-size: 24px;
+            color: #0d6efd;
+            margin-right: 10px;
+        }
+        .nav-pills .nav-link.active {
+            background-color: #0d6efd;
+        }
+        .nav-pills .nav-link {
+            color: #495057;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-exclamation-circle me-2"></i>Complaint Section</h3>
+                        <p class="mb-0">Report issues with proof and track your complaints</p>
+                    </div>
+                    <div class="card-body p-4">
+                        <ul class="nav nav-pills mb-4 justify-content-center" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="pills-new-complaint-tab" data-bs-toggle="pill" data-bs-target="#pills-new-complaint" type="button" role="tab">New Complaint</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-track-tab" data-bs-toggle="pill" data-bs-target="#pills-track" type="button" role="tab">Track Complaints</button>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content" id="pills-tabContent">
+                            <!-- New Complaint Tab -->
+                            <div class="tab-pane fade show active" id="pills-new-complaint" role="tabpanel">
+                                <form id="complaintForm">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="complaintType" class="form-label">Complaint Type</label>
+                                                <select class="form-select" id="complaintType" required>
+                                                    <option value="">Select complaint type</option>
+                                                    <option value="data_issue">Data Accuracy Issue</option>
+                                                    <option value="verification">Verification Problem</option>
+                                                    <option value="accessibility">Accessibility Issue</option>
+                                                    <option value="service">Service Complaint</option>
+                                                    <option value="technical">Technical Problem</option>
+                                                    <option value="other">Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="priority" class="form-label">Priority</label>
+                                                <select class="form-select" id="priority" required>
+                                                    <option value="low">Low</option>
+                                                    <option value="medium" selected>Medium</option>
+                                                    <option value="high">High</option>
+                                                    <option value="urgent">Urgent</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="complaintTitle" class="form-label">Complaint Title</label>
+                                        <input type="text" class="form-control" id="complaintTitle" placeholder="Brief title of your complaint" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="complaintDescription" class="form-label">Detailed Description</label>
+                                        <textarea class="form-control" id="complaintDescription" rows="4" placeholder="Please describe your issue in detail..." required></textarea>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="complaintLocation" class="form-label">Location (if applicable)</label>
+                                        <input type="text" class="form-control" id="complaintLocation" placeholder="Where did this issue occur?">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">Upload Evidence</label>
+                                        <p class="text-muted small">Upload photos or documents that support your complaint (Max 5 files, 5MB each)</p>
+                                        
+                                        <div class="upload-area" id="uploadArea">
+                                            <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                                            <p>Drag & drop files here or click to browse</p>
+                                            <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+                                            <button type="button" class="btn btn-outline-primary mt-2" onclick="document.getElementById('fileInput').click()">
+                                                <i class="fas fa-plus me-2"></i>Add Files
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="preview-container" id="previewContainer"></div>
+                                    </div>
+                                    
+                                    <div class="mb-3 form-check">
+                                        <input type="checkbox" class="form-check-input" id="termsAgree" required>
+                                        <label class="form-check-label" for="termsAgree">I confirm that the information provided is accurate to the best of my knowledge</label>
+                                    </div>
+                                    
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary btn-lg">
+                                            <i class="fas fa-paper-plane me-2"></i>Submit Complaint
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            <!-- Track Complaints Tab -->
+                            <div class="tab-pane fade" id="pills-track" role="tabpanel">
+                                <div class="mb-4">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Search by complaint ID or title..." id="searchComplaints">
+                                        <button class="btn btn-outline-secondary" type="button">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="complaints-list" id="complaintsList">
+                                    <div class="card complaint-card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h5 class="card-title">
+                                                        <i class="fas fa-id-badge complaint-type-icon"></i>
+                                                        Data mismatch in personal information
+                                                    </h5>
+                                                    <p class="card-text">My date of birth is incorrect in the Aadhaar database, causing issues with verification.</p>
+                                                    <div class="complaint-images">
+                                                        <img src="https://placehold.co/100x100/3b71ca/white?text=Proof1" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
+                                                        <img src="https://placehold.co/100x100/3b71ca/white?text=Proof2" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
+                                                    </div>
+                                                </div>
+                                                <div class="text-end">
+                                                    <div class="complaint-status status-inprogress">In Progress</div>
+                                                    <div class="text-muted small mt-2">COMP20231105</div>
+                                                    <div class="text-muted small">Submitted: 2 days ago</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card complaint-card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h5 class="card-title">
+                                                        <i class="fas fa-times-circle complaint-type-icon"></i>
+                                                        Unable to access online services
+                                                    </h5>
+                                                    <p class="card-text">I keep getting error messages when trying to access my Aadhaar services online.</p>
+                                                    <div class="complaint-images">
+                                                        <img src="https://placehold.co/100x100/3b71ca/white?text=Error1" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
+                                                        <img src="https://placehold.co/100x100/3b71ca/white?text=Error2" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
+                                                    </div>
+                                                </div>
+                                                <div class="text-end">
+                                                    <div class="complaint-status status-pending">Pending</div>
+                                                    <div class="text-muted small mt-2">COMP20231102</div>
+                                                    <div class="text-muted small">Submitted: 5 days ago</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card complaint-card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h5 class="card-title">
+                                                        <i class="fas fa-check-circle complaint-type-icon"></i>
+                                                        Biometric authentication failure
+                                                    </h5>
+                                                    <p class="card-text">My fingerprints are not being recognized at authentication centers despite multiple attempts.</p>
+                                                    <div class="complaint-images">
+                                                        <img src="https://placehold.co/100x100/3b71ca/white?text=Bio1" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
+                                                    </div>
+                                                </div>
+                                                <div class="text-end">
+                                                    <div class="complaint-status status-resolved">Resolved</div>
+                                                    <div class="text-muted small mt-2">COMP20231028</div>
+                                                    <div class="text-muted small">Submitted: 2 weeks ago</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card complaint-card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h5 class="card-title">
+                                                        <i class="fas fa-ban complaint-type-icon"></i>
+                                                        Mobile number not updating
+                                                    </h5>
+                                                    <p class="card-text">I've tried multiple times to update my mobile number but the system doesn't accept the change.</p>
+                                                    <div class="complaint-images">
+                                                        <img src="https://placehold.co/100x100/3b71ca/white?text=Mobile1" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
+                                                    </div>
+                                                </div>
+                                                <div class="text-end">
+                                                    <div class="complaint-status status-rejected">Rejected</div>
+                                                    <div class="text-muted small mt-2">COMP20231015</div>
+                                                    <div class="text-muted small">Submitted: 3 weeks ago</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <nav aria-label="Complaints pagination" class="mt-4">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                        </li>
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">Evidence Photo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="" id="modalImage" class="img-fluid" style="max-height: 70vh;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="#" class="btn btn-primary" id="downloadImage">Download</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Complaint Submitted Successfully</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-check-circle fa-5x text-success mb-4"></i>
+                    <h4>Thank You for Your Feedback</h4>
+                    <p>Your complaint has been registered successfully with ID: <strong>COMP20231106</strong></p>
+                    <p>We will review your complaint and update you on the status shortly.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Continue</button>
+                    <button type="button" class="btn btn-outline-secondary">Print Receipt</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('fileInput');
+            const previewContainer = document.getElementById('previewContainer');
+            const uploadArea = document.getElementById('uploadArea');
+            const complaintForm = document.getElementById('complaintForm');
+            const imageModal = document.getElementById('imageModal');
+            
+            let uploadedFiles = [];
+            
+            // Handle file selection
+            fileInput.addEventListener('change', function(e) {
+                const files = e.target.files;
+                handleFiles(files);
+            });
+            
+            // Drag and drop functionality
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.classList.add('bg-light');
+            });
+            
+            uploadArea.addEventListener('dragleave', function() {
+                uploadArea.classList.remove('bg-light');
+            });
+            
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('bg-light');
+                const files = e.dataTransfer.files;
+                handleFiles(files);
+            });
+            
+            // Handle uploaded files
+            function handleFiles(files) {
+                if (uploadedFiles.length + files.length > 5) {
+                    alert('You can only upload up to 5 files');
+                    return;
+                }
+                
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    
+                    // Check file size (max 5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert(`File ${file.name} is too large. Maximum size is 5MB.`);
+                        continue;
+                    }
+                    
+                    // Check if it's an image
+                    if (!file.type.startsWith('image/')) {
+                        alert(`File ${file.name} is not an image. Please upload image files only.`);
+                        continue;
+                    }
+                    
+                    uploadedFiles.push(file);
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const previewItem = document.createElement('div');
+                        previewItem.className = 'preview-item';
+                        
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        
+                        const removeBtn = document.createElement('div');
+                        removeBtn.className = 'remove-btn';
+                        removeBtn.innerHTML = '<i class="fas fa-times text-danger"></i>';
+                        removeBtn.onclick = function() {
+                            const index = uploadedFiles.indexOf(file);
+                            if (index > -1) {
+                                uploadedFiles.splice(index, 1);
+                            }
+                            previewContainer.removeChild(previewItem);
+                        };
+                        
+                        previewItem.appendChild(img);
+                        previewItem.appendChild(removeBtn);
+                        previewContainer.appendChild(previewItem);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+            
+            // Form submission
+            complaintForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Simulate form submission
+                const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                successModal.show();
+                
+                // Reset form after submission
+                setTimeout(function() {
+                    complaintForm.reset();
+                    uploadedFiles = [];
+                    previewContainer.innerHTML = '';
+                }, 2000);
+            });
+            
+            // Image modal functionality
+            const complaintImages = document.querySelectorAll('.complaint-img');
+            complaintImages.forEach(img => {
+                img.addEventListener('click', function() {
+                    document.getElementById('modalImage').src = this.src;
+                    document.getElementById('downloadImage').href = this.src;
+                });
+            });
+            
+            // Search functionality
+            const searchInput = document.getElementById('searchComplaints');
+            searchInput.addEventListener('keyup', function() {
+                const searchTerm = this.value.toLowerCase();
+                const complaints = document.querySelectorAll('.complaint-card');
+                
+                complaints.forEach(complaint => {
+                    const title = complaint.querySelector('.card-title').textContent.toLowerCase();
+                    const description = complaint.querySelector('.card-text').textContent.toLowerCase();
+                    const complaintId = complaint.querySelector('.text-muted.small.mt-2').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || description.includes(searchTerm) || complaintId.includes(searchTerm)) {
+                        complaint.style.display = 'block';
+                    } else {
+                        complaint.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
