@@ -20,7 +20,7 @@
             margin-bottom: 30px;
         }
         .card-header {
-            background:#5A4BFF;
+            background: #5A4BFF;
             color: white;
             text-align: center;
             padding: 20px;
@@ -38,9 +38,20 @@
             transition: all 0.3s;
             cursor: pointer;
         }
+
+        .btn-primary {
+            background-color: #5A4BFF !important;
+            border-color: #5A4BFF !important;
+        }
+
+        .btn-primary:hover {
+            background-color: #483dff !important;
+            border-color: #483dff !important;
+        }
+
         .btn-option:hover {
             background-color: #f8f9fa;
-            border-color:#5A4BFF;
+            border-color: #5A4BFF;
             transform: translateY(-2px);
         }
         .separator {
@@ -85,7 +96,7 @@
             color: #721c24;
         }
         .upload-area {
-            border: 2px dashed#5A4BFF;
+            border: 2px dashed #5A4BFF;
             border-radius: 8px;
             padding: 20px;
             text-align: center;
@@ -129,7 +140,7 @@
             cursor: pointer;
         }
         .complaint-card {
-            border-left: 4px solid#5A4BFF;
+            border-left: 4px solid #5A4BFF;
             margin-bottom: 15px;
             border-radius: 4px;
         }
@@ -151,14 +162,43 @@
         }
         .complaint-type-icon {
             font-size: 24px;
-            color:#5A4BFF;
+            color: #5A4BFF;
             margin-right: 10px;
         }
         .nav-pills .nav-link.active {
-            background-color:#5A4BFF;
+            background-color: #5A4BFF;
         }
         .nav-pills .nav-link {
             color: #495057;
+        }
+        
+        /* Additional styles for blue elements */
+        .btn-outline-primary {
+            color: #5A4BFF;
+            border-color: #5A4BFF;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: #5A4BFF;
+            border-color: #5A4BFF;
+            color: white;
+        }
+        
+        .page-link {
+            color: #5A4BFF;
+        }
+        
+        .page-item.active .page-link {
+            background-color: #5A4BFF;
+            border-color: #5A4BFF;
+        }
+        
+        .text-primary {
+            color: #5A4BFF !important;
+        }
+        
+        .fa-cloud-upload-alt {
+            color: #5A4BFF !important;
         }
     </style>
 </head>
@@ -233,7 +273,7 @@
                                         <p class="text-muted small">Upload photos or documents that support your complaint (Max 5 files, 5MB each)</p>
                                         
                                         <div class="upload-area" id="uploadArea">
-                                            <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                                            <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
                                             <p>Drag & drop files here or click to browse</p>
                                             <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
                                             <button type="button" class="btn btn-outline-primary mt-2" onclick="document.getElementById('fileInput').click()">
@@ -279,8 +319,8 @@
                                                     </h5>
                                                     <p class="card-text">My date of birth is incorrect in the Aadhaar database, causing issues with verification.</p>
                                                     <div class="complaint-images">
-                                                        <img src="https://placehold.co/100x100/3b71ca/white?text=Proof1" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
-                                                        <img src="https://placehold.co/100x100/3b71ca/white?text=Proof2" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
+                                                        <img src="https://placehold.co/100x100/5A4BFF/white?text=Proof1" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
+                                                        <img src="https://placehold.co/100x100/5A4BFF/white?text=Proof2" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
                                                     </div>
                                                 </div>
                                                 <div class="text-end">
@@ -302,8 +342,8 @@
                                                     </h5>
                                                     <p class="card-text">I keep getting error messages when trying to access my Aadhaar services online.</p>
                                                     <div class="complaint-images">
-                                                        <img src="https://placehold.co/100x100/3b71ca/white?text=Error1" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
-                                                        <img src="https://placehold.co/100x100/3b71ca/white?text=Error2" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
+                                                        <img src="https://placehold.co/100x100/5A4BFF/white?text=Error1" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
+                                                        <img src="https://placehold.co/100x100/5A4BFF/white?text=Error2" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
                                                     </div>
                                                 </div>
                                                 <div class="text-end">
@@ -325,7 +365,7 @@
                                                     </h5>
                                                     <p class="card-text">My fingerprints are not being recognized at authentication centers despite multiple attempts.</p>
                                                     <div class="complaint-images">
-                                                        <img src="https://placehold.co/100x100/3b71ca/white?text=Bio1" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
+                                                        <img src="https://placehold.co/100x100/5A4BFF/white?text=Bio1" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
                                                     </div>
                                                 </div>
                                                 <div class="text-end">
@@ -347,7 +387,7 @@
                                                     </h5>
                                                     <p class="card-text">I've tried multiple times to update my mobile number but the system doesn't accept the change.</p>
                                                     <div class="complaint-images">
-                                                        <img src="https://placehold.co/100x100/3b71ca/white?text=Mobile1" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
+                                                        <img src="https://placehold.co/100x100/5A4BFF/white?text=Mobile1" class="complaint-img" data-bs-toggle="modal" data-bs-target="#imageModal">
                                                     </div>
                                                 </div>
                                                 <div class="text-end">
